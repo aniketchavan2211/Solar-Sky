@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        form {
+            display: inline-block;
+            text-align: left;
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+            display: none;
+        }
+
+        #homeButton {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        #homeButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Place Your Order</h2>
+    <form id="orderForm">
+        <label>Full Name:</label>
+        <input type="text" name="full_name" required><br>
+
+        <label>Age:</label>
+        <input type="number" name="age" required><br>
+
+        <label>Address:</label>
+        <input type="text" name="address" required><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br>
+
+        <label>Phone:</label>
+        <input type="text" name="phone" required><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="successMessage" class="success-message">Your order has been placed successfully!</p>
+    <a href="/" id="homeButton">Go to Home</a> <!-- Home Button -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#orderForm").submit(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/submit-order",
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        $("#orderForm").hide();
+                        $("#successMessage").fadeIn();
+                        $("#homeButton").fadeIn(); // Show Home Button
+                    },
+                    error: function (xhr) {
+                        alert("Error: " + xhr.responseJSON.message);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
