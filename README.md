@@ -1,4 +1,4 @@
-Solutions Tech | Solor Selling Company | E-Commerce Website
+## Solutions Tech | Solor Selling Company | E-Commerce Website
 
 Technology Used:- HTML, CSS, Javascript, JQuery, AJAX, Nodejs, SQLite3
 
@@ -32,6 +32,4 @@ localhost:3000
 
 Page will Load 
 
-**
-The Website is only Configured for Accepting Order and Storing in Databases.
-**
+**The Website is only Configured for Accepting Order and Storing in Databases.**
