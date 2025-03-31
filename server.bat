@@ -7,7 +7,7 @@ cls
 echo ================================
 echo       Node.js Server Menu
 echo ================================
-echo [0] Fix SQLite3 (Cross-Platform Issue)
+echo [0] Fix SQLite3 Issues
 echo [1] Install Dependencies
 echo [2] Start Server
 echo [3] Exit
@@ -31,7 +31,7 @@ npm uninstall sqlite3
 echo Cleaning NPM cache...
 npm cache clean --force
 
-echo Reinstalling SQLite3 (Fixing cross-platform issues)...
+echo Reinstalling SQLite3...
 npm install sqlite3 --build-from-source=false
 
 echo Optional Cleanup...
@@ -40,7 +40,7 @@ del package-lock.json
 
 echo Done! Press any key to return to the menu.
 pause
-goto menu
+goto menu  REM ✅ Ensures script doesn't exit
 
 :install_deps
 cls
@@ -49,11 +49,12 @@ npm install
 
 echo Done! Press any key to return to the menu.
 pause
-goto menu
+goto menu  REM ✅ Ensures script doesn't exit
 
 :start_server
 cls
 echo Starting server...
-node app.js || echo "Server crashed! Press any key to return to the menu."
+node app.js
+echo Server stopped. Returning to menu...
 pause
-goto menu
+goto menu  REM ✅ Ensures script doesn't exit
