@@ -1,13 +1,10 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const sqlite3 = require('sqlite3').verbose();
 const db = require('./database'); // Import SQLite database
 const app = express();
 const port = 3000;
-
-// app.get('/', (req, res) => {
-//   res.send('Hello World!');
-// });
 
 // Serve static files (CSS, JS, images) from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -18,8 +15,8 @@ app.use(bodyParser.json());
 // Serve the index.html file when the user visits the root URL
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
-  });
-  
+});
+
 // Serve the order form page
 app.get('/order.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'order.html'));
@@ -27,13 +24,25 @@ app.get('/order.html', (req, res) => {
 
 // Handle form submission
 app.post('/submit-order', (req, res) => {
-    const { full_name, age, address, email, phone } = req.body;
-    if (!full_name || !age || !address || !email || !phone) {
+    const { full_name, age, address, email, phone, solar_system } = req.body;
+    if (!full_name || !age || !address || !email || !phone || !solar_system) {
         return res.status(400).json({ message: 'All fields are required!' });
     }
 
-    const sql = `INSERT INTO orders (full_name, age, address, email, phone) VALUES (?, ?, ?, ?, ?)`;
-    db.run(sql, [full_name, age, address, email, phone], function (err) {
+    // Get the current date and time
+    const date_time = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+    // Determine price based on the selected solar system
+    const prices = {
+        "Solar 5KW": 375000,
+        "Solar 10KW": 450000,
+        "Solar 15KW": 600000
+    };
+
+    const price = prices[solar_system] || 0;
+
+    const sql = `INSERT INTO orders (full_name, age, address, email, phone, solar_system, price, date_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    db.run(sql, [full_name, age, address, email, phone, solar_system, price, date_time], function (err) {
         if (err) {
             console.error(err.message);
             return res.status(500).json({ message: 'Database error' });
@@ -61,7 +70,7 @@ app.get('/admin', (req, res) => {
 
 // Route to fetch orders (with authentication)
 app.post('/get-orders', authenticate, (req, res) => {
-    const sql = "SELECT * FROM orders";
+    const sql = "SELECT * FROM orders ORDER BY date_time DESC";
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.error(err.message);
@@ -73,5 +82,5 @@ app.post('/get-orders', authenticate, (req, res) => {
 
 // Start the server and listen on port 3000
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+    console.log(`Server listening at http://localhost:${port}`);
 });

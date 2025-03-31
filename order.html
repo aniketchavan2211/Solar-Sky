@@ -19,7 +19,7 @@
             border-radius: 10px;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 8px;
             margin: 5px 0;
@@ -68,43 +68,68 @@
     <h2>Place Your Order</h2>
     <form id="orderForm">
         <label>Full Name:</label>
-        <input type="text" name="full_name" required><br>
-
+        <input type="text" name="full_name" id="fullName" required><br><br>
+    
         <label>Age:</label>
-        <input type="number" name="age" required><br>
-
+        <input type="number" name="age" id="age" required><br><br>
+    
         <label>Address:</label>
-        <input type="text" name="address" required><br>
-
+        <input type="text" name="address" id="address" required><br><br>
+    
         <label>Email:</label>
-        <input type="email" name="email" required><br>
-
+        <input type="email" name="email" id="email" required><br><br>
+    
         <label>Phone:</label>
-        <input type="text" name="phone" required><br>
-
-        <button type="submit">Submit</button>
+        <input type="tel" name="phone" id="phone" required><br><br>
+    
+        <label>Select Solar Panel:</label>
+        <select name="solar_system" id="solarPanel" required>
+            <option value="Solar 5KW">Solar 5KW - Rs 3,75,000</option>
+            <option value="Solar 10KW">Solar 10KW - Rs 4,50,000</option>
+            <option value="Solar 15KW">Solar 15KW - Rs 6,00,000</option>
+        </select><br><br>
+    
+        <button type="submit">Submit Order</button>
     </form>
 
-    <p id="successMessage" class="success-message">Your order has been placed successfully!</p>
-    <a href="/" id="homeButton">Go to Home</a> <!-- Home Button -->
-
+    <p class="success-message" id="successMessage">Order submitted successfully!</p>
+    <a href="/" id="homeButton">Go to Home</a>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#orderForm").submit(function (e) {
                 e.preventDefault();
-
+    
+                let solarPrices = {
+                    "Solar 5KW": 375000,
+                    "Solar 10KW": 450000,
+                    "Solar 15KW": 600000
+                };
+    
+                let orderData = {
+                    full_name: $("#fullName").val(),
+                    age: $("#age").val(),
+                    address: $("#address").val(),
+                    email: $("#email").val(),
+                    phone: $("#phone").val(),
+                    solar_system: $("#solarPanel").val(),
+                    price: solarPrices[$("#solarPanel").val()], // Get price
+                    date_time: new Date().toISOString().slice(0, 19).replace("T", " ") // Store current date-time
+                };
+    
                 $.ajax({
                     type: "POST",
                     url: "/submit-order",
-                    data: $(this).serialize(),
+                    contentType: "application/json",
+                    data: JSON.stringify(orderData),
                     success: function (response) {
-                        $("#orderForm").hide();
-                        $("#successMessage").fadeIn();
-                        $("#homeButton").fadeIn(); // Show Home Button
+                        $("#successMessage").show();
+                        $("#homeButton").show();
+                        $("#orderForm")[0].reset();
                     },
-                    error: function (xhr) {
-                        alert("Error: " + xhr.responseJSON.message);
+                    error: function () {
+                        alert("Error submitting order!");
                     }
                 });
             });
