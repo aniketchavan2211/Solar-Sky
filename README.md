@@ -39,5 +39,16 @@ Page will Load
 Issue: Cross-Platform Compatibility
 
 ```
-npm install --platform=win32 --arch=x64 sqlite3
+npm uninstall sqlite3
+
+npm cache clean --force
+
+npm install sqlite3 --build-from-source=false
+```
+
+
+optional
+```
+rmdir /s /q node_modules
+del package-lock.json
 ```
