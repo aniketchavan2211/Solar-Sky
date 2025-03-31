@@ -1,4 +1,4 @@
-## Solutions Tech | Solor Selling Company | E-Commerce Website
+## Solar Sky | Solor Selling Company | E-Commerce Website
 
 Technology Used:- HTML, CSS, Javascript, JQuery, AJAX, Nodejs, SQLite3
 
@@ -19,6 +19,7 @@ NPM is Nodejs Package Manager, we are used checking the versions.
 then start the server using Nodejs,
 
 ```
+npm install 
 node app.js
 ```
 
