@@ -19,7 +19,7 @@ if "%choice%"=="1" goto install_deps
 if "%choice%"=="2" goto start_server
 if "%choice%"=="3" exit
 
-echo Invalid choice! Try again.
+echo Invalid choice! Press any key to try again.
 pause
 goto menu
 
@@ -38,7 +38,7 @@ echo Optional Cleanup...
 rmdir /s /q node_modules
 del package-lock.json
 
-echo Done! Returning to menu...
+echo Done! Press any key to return to the menu.
 pause
 goto menu
 
@@ -47,15 +47,13 @@ cls
 echo Installing dependencies...
 npm install
 
-echo Done! Returning to menu...
+echo Done! Press any key to return to the menu.
 pause
 goto menu
 
 :start_server
 cls
 echo Starting server...
-node app.js
-
-echo Server stopped. Press any key to return to the menu.
+node app.js || echo "Server crashed! Press any key to return to the menu."
 pause
 goto menu
