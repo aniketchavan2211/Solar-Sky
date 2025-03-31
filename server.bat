@@ -24,6 +24,7 @@ pause
 goto menu
 
 :fix_sqlite
+cls
 echo Removing SQLite3...
 npm uninstall sqlite3
 
@@ -37,22 +38,24 @@ echo Optional Cleanup...
 rmdir /s /q node_modules
 del package-lock.json
 
-echo Done! Press any key to return to menu.
+echo Done! Returning to menu...
 pause
 goto menu
 
 :install_deps
+cls
 echo Installing dependencies...
 npm install
 
-echo Done! Press any key to return to menu.
+echo Done! Returning to menu...
 pause
 goto menu
 
 :start_server
+cls
 echo Starting server...
 node app.js
 
-echo Server stopped. Press any key to return to menu.
+echo Server stopped. Press any key to return to the menu.
 pause
 goto menu
