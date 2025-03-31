@@ -33,3 +33,10 @@ localhost:3000
 Page will Load 
 
 **The Website is only Configured for Accepting Order and Storing in Databases.**
+
+
+Issue: Cross-Platform Compatibility
+
+```
+npm install --platform=win32 --arch=x64 sqlite3
+```
